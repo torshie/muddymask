@@ -1,0 +1,18 @@
+#ifndef MUDDY_COMPAT_MEMORY_INCLUDED_
+#define MUDDY_COMPAT_MEMORY_INCLUDED_
+
+#include <config.h>
+
+#if HAVE_TR1_MEMORY
+#	include <tr1/memory>
+#else
+#	include <memory>
+#endif
+
+namespace muddy {
+
+using std::tr1::shared_ptr;
+
+} // namespace muddy
+
+#endif // MUDDY_COMPAT_MEMORY_INCLUDED_
