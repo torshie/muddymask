@@ -15,12 +15,12 @@
 #if ENABLE_ADVANCED_MM
 #define USE_SLICE_ALLOCATOR(type) \
 	static void* operator new (size_t s) { \
-		typedef ::search::SliceAllocator<sizeof(type)> Allocator; \
-		return Allocator::singleton().allocate(s); \
+		typedef ::search::SliceAllocator<sizeof(type)> Alloc; \
+		return Alloc::singleton().allocate(s); \
 	} \
 	static void operator delete (void* p) { \
-		typedef ::search::SliceAllocator<sizeof(type)> Allocator; \
-		Allocator::singleton().release(p); \
+		typedef ::search::SliceAllocator<sizeof(type)> Alloc; \
+		Alloc::singleton().release(p); \
 	}
 #else
 #	define USE_SLICE_ALLOCATOR(a)

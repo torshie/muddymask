@@ -1,10 +1,5 @@
 #include <cctype>
-#include <cstring>
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <muddy/compat/memory>
-#include <muddy/common/except.hpp>
+#include <winsock2.h>
 #include <muddy/common/wrapper/wrapper.hpp>
 #include <muddy/common/ConfigParser.hpp>
 

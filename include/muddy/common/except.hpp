@@ -1,12 +1,9 @@
 #ifndef MUDDY_COMMON_EXCEPT_HPP_INCLUDED_
 #define MUDDY_COMMON_EXCEPT_HPP_INCLUDED_
 
-#include <cstddef>
 #include <cstdarg>
-#include <cstring>
-#include <cstdio>
 #include <exception>
-#include <muddy/compat/memory>
+#include <muddy/common/compat/memory>
 
 namespace muddy {
 

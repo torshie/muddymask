@@ -1,13 +1,13 @@
 #include <winsock2.h>
-#include <muddy/common/except.hpp>
 #include <muddy/common/Registry.hpp>
-#include <muddy/compat/misc.hpp>
 #include <muddy/adapter/Tuntap_win32.hpp>
 
 using namespace muddy;
 
-#define TAP_WIN_CONTROL_CODE(request,method) \
+#define TAP_WIN_CONTROL_CODE(request, method) \
 	CTL_CODE(FILE_DEVICE_UNKNOWN, request, method, FILE_ANY_ACCESS)
+#define TAP_WIN_IOCTL_SET_MEDIA_STATUS \
+	TAP_WIN_CONTROL_CODE (6, METHOD_BUFFERED)
 #define TAP_WIN_IOCTL_CONFIG_TUN \
 	TAP_WIN_CONTROL_CODE(10, METHOD_BUFFERED)
 
@@ -34,9 +34,8 @@ std::string getDeviceId() {
 
 } // namespace
 
-Tuntap::Tuntap() {
+Tuntap::Tuntap(in_addr_t address, in_addr_t mask) {
 	static const char* const kDeviceSpace = "\\\\.\\Global\\";
-
 	std::string path = std::string(kDeviceSpace) + getDeviceId() + ".tap";
 	handle = CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0,
 			NULL, OPEN_EXISTING, FILE_ATTRIBUTE_SYSTEM, 0);
@@ -44,14 +43,17 @@ Tuntap::Tuntap() {
 		throw Unpossible();
 	}
 
-	in_addr_t netcfg[3] = {
-			inet_addr("10.10.0.1"),
-			0, inet_addr("255.255.255.0")
-	};
-	DWORD len = sizeof(netcfg);
+	in_addr_t netcfg[3] = { address, address & mask, mask };
 	netcfg[1] = netcfg[0] & netcfg[2];
-	if (!DeviceIoControl(handle, TAP_WIN_IOCTL_CONFIG_TUN,
-			netcfg, sizeof(netcfg), netcfg, sizeof(netcfg), &len, NULL)){
+	DWORD len = 0;
+	if (!DeviceIoControl(handle, TAP_WIN_IOCTL_CONFIG_TUN, netcfg,
+			sizeof(netcfg), netcfg, sizeof(netcfg), &len, NULL)) {
+		throw Unpossible();
+	}
+
+	ULONG s = TRUE;
+	if (!DeviceIoControl(handle, TAP_WIN_IOCTL_SET_MEDIA_STATUS, &s,
+			sizeof(s), &s, sizeof(s), &len, NULL)) {
 		throw Unpossible();
 	}
 }

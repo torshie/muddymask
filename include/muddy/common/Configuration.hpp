@@ -1,7 +1,6 @@
 #ifndef _MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
 #define _MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
 
-#include <cstdlib>
 #include <list>
 #include <map>
 #include <string>

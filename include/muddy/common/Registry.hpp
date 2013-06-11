@@ -1,11 +1,8 @@
 #ifndef MUDDY_COMMON_REGISTRY_HPP_INCLUDED_
 #define MUDDY_COMMON_REGISTRY_HPP_INCLUDED_
 
-#if _WIN32
-
 #include <list>
 #include <string>
-#include <windows.h>
 
 namespace muddy {
 
@@ -17,7 +14,5 @@ public:
 };
 
 } // namespace muddy
-
-#endif // #if _WIN32
 
 #endif // MUDDY_COMMON_REGISTRY_HPP_INCLUDED_

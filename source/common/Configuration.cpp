@@ -1,3 +1,4 @@
+#include <cctype>
 #include <cstdio>
 #include <cstring>
 #include <muddy/common/except.hpp>
@@ -20,7 +21,7 @@ Configuration& Configuration::add(const char* name, bool mandatory,
 	}
 
 	char env[128];
-	sprintf(env, "srch_%s_%s", section.c_str(), name);
+	sprintf(env, "muddy_%s_%s", section.c_str(), name);
 	const char* value = std::getenv(env);
 	if (value != NULL) {
 		arg.value = value;
@@ -111,11 +112,11 @@ void Configuration::parseConfigFile(const char* fileName) {
 void Configuration::parseStringSequence(const char* str) {
 	const char* begin = str, *end = NULL;
 	for (;;) {
-		while (*begin != '\0' && isspace(*begin)) {
+		while (*begin != '\0' && std::isspace(*begin)) {
 			++begin;
 		}
 		end = begin;
-		while (*end != '\0' && !isspace(*end)) {
+		while (*end != '\0' && !std::isspace(*end)) {
 			++end;
 		}
 		if (begin == end) {

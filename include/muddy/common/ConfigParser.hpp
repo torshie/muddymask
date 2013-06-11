@@ -1,7 +1,9 @@
 #ifndef _MUDDY_COMMON_CONFIG_PARSER_HPP_INCLUDED_
 #define _MUDDY_COMMON_CONFIG_PARSER_HPP_INCLUDED_
 
+#include <cstdio>
 #include <map>
+#include <string>
 
 namespace muddy {
 

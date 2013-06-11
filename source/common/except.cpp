@@ -1,3 +1,7 @@
+#include <cstdarg>
+#include <exception>
+#include <config.h>
+#include <muddy/common/compat/memory>
 #include <muddy/common/except.hpp>
 
 using namespace muddy;

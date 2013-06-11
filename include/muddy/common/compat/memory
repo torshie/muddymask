@@ -1,5 +1,5 @@
-#ifndef MUDDY_COMPAT_MEMORY_INCLUDED_
-#define MUDDY_COMPAT_MEMORY_INCLUDED_
+#ifndef MUDDY_COMMON_COMPAT_MEMORY_INCLUDED_
+#define MUDDY_COMMON_COMPAT_MEMORY_INCLUDED_
 
 #include <config.h>
 
@@ -15,4 +15,4 @@ using std::tr1::shared_ptr;
 
 } // namespace muddy
 
-#endif // MUDDY_COMPAT_MEMORY_INCLUDED_
+#endif // MUDDY_COMMON_COMPAT_MEMORY_INCLUDED_

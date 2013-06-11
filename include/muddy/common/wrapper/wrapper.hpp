@@ -18,6 +18,10 @@
 	return value
 
 #include <muddy/common/wrapper/libc.hpp>
+#include <muddy/common/wrapper/inet.hpp>
+#if !_WIN32
+#include <muddy/common/wrapper/unix.hpp>
+#endif
 
 #undef CHECK_RETURN_ZERO
 #undef CHECK_NON_NEGATIVE

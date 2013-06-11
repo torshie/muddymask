@@ -1,5 +1,4 @@
-#if _WIN32
-
+#include <windows.h>
 #include <muddy/common/except.hpp>
 #include <muddy/common/Registry.hpp>
 
@@ -43,5 +42,3 @@ std::list<std::string> Registry::listSubkey(HKEY key, const char* path) {
 	}
 	return result;
 }
-
-#endif // #if _WIN32

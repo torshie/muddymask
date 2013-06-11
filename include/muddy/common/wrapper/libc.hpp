@@ -7,8 +7,6 @@
 
 #include <cerrno>
 #include <cstdio>
-#include <cstdarg>
-#include <cstdlib>
 
 namespace muddy { namespace wrapper {
 
