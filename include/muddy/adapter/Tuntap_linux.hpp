@@ -1,8 +1,9 @@
-#ifndef MUDDY_ADAPTER_TUNTAP_WIN32_HPP_INCLUDED_
-#define MUDDY_ADAPTER_TUNTAP_WIN32_HPP_INCLUDED_
+#ifndef MUDDY_ADAPTER_TUNTAP_LINUX_HPP_INCLUDED_
+#define MUDDY_ADAPTER_TUNTAP_LINUX_HPP_INCLUDED_
 
+#include <linux/if.h>
+#include <linux/if_tun.h>
 #include <muddy/common/util/define.hpp>
-#include <muddy/common/wrapper/wrapper.hpp>
 
 namespace muddy {
 
@@ -16,9 +17,9 @@ public:
 	int write(const void* buffer, int size);
 
 private:
-	void* handle; // TODO Use void* instead of HANDLE is bad bad.
+	int tuntap;
 };
 
 } // namespace muddy
 
-#endif // MUDDY_ADAPTER_TUNTAP_WIN32_HPP_INCLUDED_
+#endif // MUDDY_ADAPTER_TUNTAP_LINUX_HPP_INCLUDED_

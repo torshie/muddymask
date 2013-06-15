@@ -7,6 +7,8 @@
 
 #include <sys/types.h>
 #include <sys/resource.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <pwd.h>
 
@@ -26,6 +28,25 @@ inline void setuid_(uid_t uid) {
 
 inline void setgid_(gid_t gid) {
 	CHECK_RETURN_ZERO(setgid(gid));
+}
+
+inline int open_(const char* path, int flags) {
+	if (flags & O_CREAT) {
+		throw InvalidArgument();
+	}
+	CHECK_NON_NEGATIVE(int, open(path, flags));
+}
+
+inline ssize_t read_(int fd, void* buf, size_t s) {
+	CHECK_NON_NEGATIVE(ssize_t, read(fd, buf, s));
+}
+
+inline ssize_t write_(int fd, const void* buf, size_t s) {
+	CHECK_NON_NEGATIVE(ssize_t, write(fd, buf, s));
+}
+
+inline void close_(int fd) {
+	CHECK_RETURN_ZERO(close(fd));
 }
 
 }} // namespace muddy::wrapper

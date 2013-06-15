@@ -34,7 +34,7 @@ std::string getDeviceId() {
 
 } // namespace
 
-Tuntap::Tuntap(in_addr_t address, in_addr_t mask) {
+Tuntap::Tuntap(in_addr_t address, in_addr_t netmask) {
 	static const char* const kDeviceSpace = "\\\\.\\Global\\";
 	std::string path = std::string(kDeviceSpace) + getDeviceId() + ".tap";
 	handle = CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0,
@@ -43,7 +43,7 @@ Tuntap::Tuntap(in_addr_t address, in_addr_t mask) {
 		throw Unpossible();
 	}
 
-	in_addr_t netcfg[3] = { address, address & mask, mask };
+	in_addr_t netcfg[3] = { address, address & netmask, netmask };
 	netcfg[1] = netcfg[0] & netcfg[2];
 	DWORD len = 0;
 	if (!DeviceIoControl(handle, TAP_WIN_IOCTL_CONFIG_TUN, netcfg,

@@ -1,5 +1,9 @@
 if (${WIN32})
-add_library(adapter STATIC
-		Tuntap_win32.cpp
-		)
+	set(TUNTAP_SOURCE Tuntap_win32.cpp)
+else()
+	set(TUNTAP_SOURCE Tuntap_linux.cpp)
 endif()
+
+add_library(adapter STATIC
+		${TUNTAP_SOURCE}
+		)
