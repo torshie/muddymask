@@ -1,9 +1,13 @@
 #include <cstring>
 #include <utility>
+#if _WIN32
 #include <winsock2.h>
 #include <windows.h>
+#endif
+#include <muddy/common/logging/log.hpp>
 #include <muddy/common/util/inet.hpp>
 #include <muddy/common/util/misc.hpp>
+#include <muddy/common/wrapper/wrapper.hpp>
 #include <muddy/common/Configuration.hpp>
 #include <muddy/common/InitManager.hpp>
 #include <muddy/common/inet/DatagramSocket.hpp>
@@ -36,12 +40,54 @@ in_addr_t getNetMask(const char* prefix) {
 	return (~(in_addr_t)0) << (32 - size);
 }
 
-bool keepGoing = true;
-
-void handleInboundData(void* arg) {
+#if !_WIN32
+void dropRoot() {
+	passwd* pw = getpwnam("nobody");
+	if (pw == NULL) {
+		WARNING << "Cannot find system user \"nobody\"";
+		return;
+	}
+	wrapper::setgid_(pw->pw_gid);
+	wrapper::setuid_(pw->pw_uid);
 }
+#endif
 
-void handleOutboundData(void* arg) {
+class MuddyServer {
+public:
+	MuddyServer(Tuntap* t, DatagramSocket* s)
+			: tuntap(t), socket(s), inbound(NULL), outbound(NULL),
+			keepGoing(true) {}
+
+	void startup() {
+		inbound = new Thread(&handleIncomingData, this);
+		outbound = new Thread(&handleOutgoingData, this);
+	}
+
+	void shutdown() {
+		keepGoing = false;
+		inbound->wait();
+		outbound->wait();
+		delete this; // TODO "delete this" is OK, but ?
+	}
+
+private:
+	Tuntap* tuntap;
+	DatagramSocket* socket;
+	Thread* inbound;
+	Thread* outbound;
+	volatile bool keepGoing;
+
+	~MuddyServer() {
+		delete inbound;
+		delete outbound;
+	}
+
+	static void handleIncomingData(void* arg);
+	static void handleOutgoingData(void* arg);
+};
+
+void MuddyServer::handleIncomingData(void* arg) {
+	MuddyServer* self = static_cast<MuddyServer*>(arg);
 }
 
 } // namespace
@@ -51,7 +97,7 @@ int main(int argc, char** argv) {
 
 	Configuration config("server");
 	config.add("listen", false, "0.0.0.0:5303").add("network", true)
-			.add("secret", true);
+			.add("secret", false, "");
 #if !_WIN32
 	config.add("daemon", false).add("core", false);
 #endif
@@ -72,22 +118,19 @@ int main(int argc, char** argv) {
 	in_addr_t netmask = getNetMask(prefix);
 	in_addr_t local = wrapper::inet_addr_(copy);
 
-	// This tuntap instance would in accessed by multiple threads, so it
-	// cannot be created on the stack of the main thread.
+	// This following two objects would be accessed by multiple threads,
+	// so it cannot be created on the stack of the main thread.
 	std::auto_ptr<Tuntap> tuntap(new Tuntap(local, netmask));
 	std::auto_ptr<DatagramSocket> socket(new DatagramSocket());
 	socket->bind(util::getInetAddress(config.getString("listen")));
 
-	typedef std::pair<void*, void*> Pair;
-	std::auto_ptr<Pair> a(new Pair(tuntap.get(), socket.get()));
-	std::auto_ptr<Thread> inboundThread(
-			new Thread(&handleInboundData, a.get()));
-	std::auto_ptr<Thread> outboundThread(
-			new Thread(&handleOutboundData, a.get()));
+#if !_WIN32
+	dropRoot();
+#endif
+	MuddyServer* server = new MuddyServer(tuntap.get(), socket.get());
+	server->startup();
 
 	util::pause();
 
-	keepGoing = false;
-	inboundThread->wait();
-	outboundThread->wait();
+	server->shutdown();
 }
