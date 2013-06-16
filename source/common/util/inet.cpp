@@ -1,6 +1,8 @@
 #include <cstdio>
 #include <cstring>
+#if _WIN32
 #include <winsock2.h>
+#endif
 #include <muddy/common/compat/memory>
 #include <muddy/common/wrapper/wrapper.hpp>
 #include <muddy/common/util/inet.hpp>

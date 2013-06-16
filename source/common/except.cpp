@@ -1,4 +1,6 @@
 #include <cstdarg>
+#include <cstdlib>
+#include <cstring>
 #include <exception>
 #include <config.h>
 #include <muddy/common/compat/memory>

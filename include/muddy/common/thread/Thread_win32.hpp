@@ -11,7 +11,9 @@ public:
 	void wait();
 
 private:
-	uintptr_t tid;
+	uintptr_t thread;
+	void (*entry)(void*);
+	void* argument;
 
 	static unsigned __stdcall call(void* p);
 };

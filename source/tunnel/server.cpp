@@ -86,10 +86,6 @@ private:
 	static void handleOutgoingData(void* arg);
 };
 
-void MuddyServer::handleIncomingData(void* arg) {
-	MuddyServer* self = static_cast<MuddyServer*>(arg);
-}
-
 } // namespace
 
 int main(int argc, char** argv) {
@@ -104,10 +100,10 @@ int main(int argc, char** argv) {
 	config.parse(argc, argv);
 
 #if !_WIN32
-	if (boolOptionSet(config, "core")) {
-		enableCoreDump();
+	if (util::boolOptionSet(config, "core")) {
+		util::enableCoreDump();
 	}
-	if (boolOptionSet(config, "daemon")) {
+	if (util::boolOptionSet(config, "daemon")) {
 		wrapper::daemon_(1, 1);
 	}
 #endif

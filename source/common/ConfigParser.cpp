@@ -1,5 +1,4 @@
 #include <cctype>
-#include <winsock2.h>
 #include <muddy/common/wrapper/wrapper.hpp>
 #include <muddy/common/ConfigParser.hpp>
 

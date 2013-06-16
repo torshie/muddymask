@@ -49,6 +49,10 @@ inline void close_(int fd) {
 	CHECK_RETURN_ZERO(close(fd));
 }
 
+inline void daemon_(int a, int b) {
+	CHECK_RETURN_ZERO(daemon(a, b));
+}
+
 }} // namespace muddy::wrapper
 
 #endif // MUDDY_COMMON_WRAPPER_UNIX_HPP_INCLUDED_

@@ -2,6 +2,8 @@
 #define MUDDY_COMMON_EXCEPT_HPP_INCLUDED_
 
 #include <cstdarg>
+#include <cstdio>
+#include <cstring>
 #include <exception>
 #include <muddy/common/compat/memory>
 

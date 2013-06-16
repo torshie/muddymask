@@ -17,6 +17,11 @@
 	} \
 	return value
 
+#if _WIN32
+#include <winsock2.h>
+#include <windows.h>
+#endif
+
 #include <muddy/common/wrapper/libc.hpp>
 #include <muddy/common/wrapper/inet.hpp>
 #if !_WIN32

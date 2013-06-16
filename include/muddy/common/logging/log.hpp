@@ -1,6 +1,8 @@
 #ifndef MUDDY_COMMON_LOGGING_LOG_HPP_INCLUDED_
 #define MUDDY_COMMON_LOGGING_LOG_HPP_INCLUDED_
 
+#include <muddy/common/logging/Logger.hpp>
+
 namespace muddy { namespace logging {
 
 struct Dummy {
@@ -26,14 +28,14 @@ typename LoggerType<tLevel>::T log() {
 	return T(tLevel);
 }
 
-#define TRACE ::muddy::logging::log< ::search::logging::kTrace>()
-#define DEBUG ::muddy::logging::log< ::search::logging::kDebug>()
-#define VERBOSE ::muddy::logging::log< ::search::logging::kVerbose>()
-#define INFO ::muddy::logging::log< ::search::logging::kInfo>()
-#define NOTICE ::muddy::logging::log< ::search::logging::kNotice>()
-#define WARNING ::muddy::logging::log< ::search::logging::kWarning>()
-#define ERROR ::muddy::logging::log< ::search::logging::kError>()
-#define FATAL ::muddy::logging::log< ::search::logging::kFatal>()
+#define TRACE ::muddy::logging::log< ::muddy::logging::kTrace>()
+#define DEBUG ::muddy::logging::log< ::muddy::logging::kDebug>()
+#define VERBOSE ::muddy::logging::log< ::muddy::logging::kVerbose>()
+#define INFO ::muddy::logging::log< ::muddy::logging::kInfo>()
+#define NOTICE ::muddy::logging::log< ::muddy::logging::kNotice>()
+#define WARNING ::muddy::logging::log< ::muddy::logging::kWarning>()
+#define ERROR ::muddy::logging::log< ::muddy::logging::kError>()
+#define FATAL ::muddy::logging::log< ::muddy::logging::kFatal>()
 
 }} // namespace muddy::logging
 

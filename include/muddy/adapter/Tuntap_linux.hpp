@@ -1,8 +1,7 @@
 #ifndef MUDDY_ADAPTER_TUNTAP_LINUX_HPP_INCLUDED_
 #define MUDDY_ADAPTER_TUNTAP_LINUX_HPP_INCLUDED_
 
-#include <linux/if.h>
-#include <linux/if_tun.h>
+#include <muddy/common/wrapper/wrapper.hpp>
 #include <muddy/common/util/define.hpp>
 
 namespace muddy {

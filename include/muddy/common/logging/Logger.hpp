@@ -1,6 +1,9 @@
 #ifndef MUDDY_COMMON_LOGGING_LOGGER_HPP_INCLUDED_
 #define MUDDY_COMMON_LOGGING_LOGGER_HPP_INCLUDED_
 
+#include <sstream>
+#include <muddy/common/helper.hpp>
+
 namespace muddy { namespace logging {
 
 enum Severity {

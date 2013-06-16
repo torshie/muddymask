@@ -1,3 +1,4 @@
+#include <cstring>
 #include <muddy/common/helper.hpp>
 #include <muddy/common/crypto/Dummy.hpp>
 

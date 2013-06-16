@@ -1,5 +1,6 @@
 #include <cctype>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <muddy/common/except.hpp>
 #include <muddy/common/Configuration.hpp>

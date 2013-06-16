@@ -6,24 +6,17 @@
 #endif
 
 #include <muddy/common/compat/stdint.h>
-#if !_WIN32
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
+#if !HAVE_WINSOCK
+#include <muddy/common/wrapper/inet_posix.hpp>
 #else
-// On windows it's a must to include <winsock2.h> before <windows.h>,
-// so <winsock2.h> cannot be included here.
-#endif
-
-#if !HAVE_IN_ADDR_T
-typedef uint32_t in_addr_t;
-#endif
+#include <muddy/common/wrapper/inet_win32.hpp>
+#endif // #if !HAVE_WINSOCK
 
 namespace muddy { namespace wrapper {
 
 inline in_addr_t inet_addr_(const char* cp) {
 	in_addr_t n = inet_addr(cp);
-	if (n == INADDR_NONE || n == INADDR_ANY) {
+	if (n == INADDR_NONE) {
 		throw InvalidInetAddress(cp);
 	}
 	return n;
