@@ -1,6 +1,7 @@
-#ifndef _MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
-#define _MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
+#ifndef MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
+#define MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
 
+#include <cstdlib>
 #include <list>
 #include <map>
 #include <string>
@@ -25,13 +26,18 @@ public:
 	}
 
 private:
+	enum ValueOrigin {
+		kInvalidOrigin = 0, kDefaultValue, kConfigFile,
+		kEnvironmentVariable, kCommandLine
+	};
+
 	struct Argument {
 		bool mandatory;
-		bool valueGiven;
+		ValueOrigin origin;
 		std::string value;
 
 		explicit Argument(bool mandatory)
-				: mandatory(mandatory), valueGiven(false) {}
+				: mandatory(mandatory), origin(kInvalidOrigin) {}
 	};
 
 	typedef std::map<std::string, Argument> Map;
@@ -46,4 +52,4 @@ private:
 
 } // namespace muddy
 
-#endif // _MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_
+#endif // MUDDY_COMMON_CONFIGURATION_HPP_INCLUDED_

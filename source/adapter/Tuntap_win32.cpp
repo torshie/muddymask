@@ -1,5 +1,6 @@
 #include <winsock2.h>
 #include <muddy/common/Registry.hpp>
+#include <muddy/common/util/inet.hpp>
 #include <muddy/adapter/Tuntap_win32.hpp>
 
 using namespace muddy;

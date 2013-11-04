@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <exception>
-#include <config.h>
+#include <config.hpp>
 #include <muddy/common/compat/memory>
 #include <muddy/common/except.hpp>
 

@@ -1,36 +1,23 @@
 #ifndef MUDDY_TUNNEL_PROTOCOL_HPP_INCLUDED_
 #define MUDDY_TUNNEL_PROTOCOL_HPP_INCLUDED_
 
-#include <muddy/common/compat/stdint.h>
+#include <stdint.h>
 
 namespace muddy {
 
-enum {
-	kGreeting = 1, kChallenge, kAnswer, kConfigure, kForwardData
+enum PacketType {
+	kStartSession = 1,
+	kEndSession,
+	kRelayData,
 };
 
-template<int tType> struct Packet;
-
-template<>
-struct Packet<kGreeting> {
-	uint64_t magic;
-	char user[64];
+struct PacketHeader {
+	int8_t type;
+	int8_t _unused[3];
+	int32_t length;
 };
 
-template<>
-struct Packet<kConfigure> {
-	in_addr_t address;
-	in_addr_t netmask;
-	in_addr_t gateway;
-	uint32_t _reserved;
-	uint64_t cryptoKey;
-};
-
-template<>
-struct Packet<kForwardData> {
-	uint32_t checksum;
-	char data[];
-};
+enum { kMaxIdle = 120 };
 
 } // namespace muddy
 

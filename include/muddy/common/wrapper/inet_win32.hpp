@@ -2,6 +2,9 @@
 #error "Donnot #include me"
 #endif
 
+#include <winsock2.h>
+#include <windows.h>
+
 typedef uint32_t in_addr_t;
 typedef SOCKET Socket;
 typedef int socklen_t;

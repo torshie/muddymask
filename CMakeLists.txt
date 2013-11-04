@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 
 include(CheckCXXCompilerFlag)
 include(cmake/config.cmake)
-if (${MSVC})
+if (MSVC)
 	include(cmake/vc.cmake)
 else()
 	include(cmake/gcc.cmake)
@@ -33,7 +33,7 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "debug")
 	add_definitions(-DENABLE_DEBUGGING_CODE=1)
 endif()
 
-include_directories(include ${CMAKE_BINARY_DIR})
+include_directories(include ${CMAKE_BINARY_DIR}/cfg)
 
 set(LINKER_FLAGS "${CFG_MT_FLAGS} ${CFG_LTO_FLAGS}")
 set(CMAKE_CXX_FLAGS ${CFG_MISC_FLAGS} ${CFG_OPT_FLAGS} ${CFG_LTO_FLAGS})

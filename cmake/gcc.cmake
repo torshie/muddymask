@@ -1,7 +1,7 @@
 set(CFG_MT_FLAGS -pthread)
 
 check_cxx_compiler_flag(-flto CXX_HAS_LTO)
-if ("${CXX_HAS_LTO}" AND "${CFG_BUILD_TYPE}" STREQUAL "release")
+if (CXX_HAS_LTO AND "${CFG_BUILD_TYPE}" STREQUAL "release")
 	set(CFG_LTO_FLAGS -flto)
 endif()
 unset(CXX_HAS_LTO)
@@ -13,7 +13,7 @@ else()
 endif()
 
 set(CFG_MISC_FLAGS -Wextra -Wall)
-if (NOT "${DISABLE_WERROR}")
+if (NOT DISABLE_WERROR)
 	set(CFG_MISC_FLAGS ${CFG_MISC_FLAGS} -Werror)
 endif()
 unset(DISABLE_WERROR)

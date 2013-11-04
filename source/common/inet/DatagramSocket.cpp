@@ -1,6 +1,3 @@
-#if _WIN32
-#include <winsock2.h>
-#endif
 #include <muddy/common/except.hpp>
 #include <muddy/common/inet/DatagramSocket.hpp>
 

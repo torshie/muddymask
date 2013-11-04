@@ -6,7 +6,7 @@
 #endif
 
 #include <muddy/common/compat/stdint.h>
-#if !HAVE_WINSOCK
+#if !HAVE_WINSOCK2_H
 #include <muddy/common/wrapper/inet_posix.hpp>
 #else
 #include <muddy/common/wrapper/inet_win32.hpp>

@@ -5,23 +5,25 @@
 using namespace muddy;
 using namespace muddy::crypto;
 
-void Dummy::encrypt(const std::string& text, std::string* output) {
-	typedef helper::IntegerType<sizeof(key)>::U ChunkType;
-	const char* end = text.c_str() + text.size();
-	for (const char* p = text.c_str(); p < end; p += sizeof(key)) {
-		ChunkType chunk = *reinterpret_cast<const ChunkType*>(p);
+void Dummy::encrypt(const void* text, int length,
+		std::string* output) const {
+	const char* end = static_cast<const char*>(text) + length;
+	for (const char* p = static_cast<const char*>(text);
+			p < end; p += sizeof(key)) {
+		CryptoKey chunk = *reinterpret_cast<const CryptoKey*>(p);
 		chunk ^= key;
 		output->append(reinterpret_cast<char*>(&chunk), sizeof(chunk));
 	}
-	if (text.size() % sizeof(key) != 0) {
-		ChunkType chunk = 0;
-		size_t remaining = text.size() % sizeof(key);
+	if (length % sizeof(key) != 0) {
+		CryptoKey chunk = 0;
+		int remaining = length % sizeof(key);
 		std::memcpy(&chunk, end - remaining, remaining);
 		output->append(reinterpret_cast<char*>(&chunk), remaining);
 	}
 }
 
-void Dummy::decrypt(const std::string& data, std::string* text) {
+void Dummy::decrypt(const void* data, int length,
+		std::string* text) const {
 	// It simply works!
-	encrypt(data, text);
+	encrypt(data, length, text);
 }

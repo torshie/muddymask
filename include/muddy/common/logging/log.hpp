@@ -28,14 +28,14 @@ typename LoggerType<tLevel>::T log() {
 	return T(tLevel);
 }
 
-#define TRACE ::muddy::logging::log< ::muddy::logging::kTrace>()
-#define DEBUG ::muddy::logging::log< ::muddy::logging::kDebug>()
-#define VERBOSE ::muddy::logging::log< ::muddy::logging::kVerbose>()
-#define INFO ::muddy::logging::log< ::muddy::logging::kInfo>()
-#define NOTICE ::muddy::logging::log< ::muddy::logging::kNotice>()
-#define WARNING ::muddy::logging::log< ::muddy::logging::kWarning>()
-#define ERROR ::muddy::logging::log< ::muddy::logging::kError>()
-#define FATAL ::muddy::logging::log< ::muddy::logging::kFatal>()
+#define LOG_TRACE ::muddy::logging::log< ::muddy::logging::kTrace>()
+#define LOG_DEBUG ::muddy::logging::log< ::muddy::logging::kDebug>()
+#define LOG_VERBOSE ::muddy::logging::log< ::muddy::logging::kVerbose>()
+#define LOG_INFO ::muddy::logging::log< ::muddy::logging::kInfo>()
+#define LOG_NOTICE ::muddy::logging::log< ::muddy::logging::kNotice>()
+#define LOG_WARNING ::muddy::logging::log< ::muddy::logging::kWarning>()
+#define LOG_ERROR ::muddy::logging::log< ::muddy::logging::kError>()
+#define LOG_FATAL ::muddy::logging::log< ::muddy::logging::kFatal>()
 
 }} // namespace muddy::logging
 

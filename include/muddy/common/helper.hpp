@@ -5,6 +5,71 @@
 
 namespace muddy { namespace helper {
 
+template<typename Key, typename Value>
+struct ListNode {
+	Key key;
+	Value value;
+
+	explicit ListNode(const Key& k) : key(k) {}
+};
+
+template<typename Key>
+struct ListNode<Key, void> {
+	Key key;
+
+	explicit ListNode(const Key& k) : key(k) {}
+};
+
+template<typename T>
+struct Compare {
+	static bool equal(const T& a, const T& b) {
+		return a == b;
+	}
+};
+
+template<>
+struct Compare<const char*> {
+	static bool equal(const char*& a, const char*& b) {
+		return std::strcmp(a, b) == 0;
+	}
+
+	static bool equal(const char*& a, char*& b) {
+		return std::strcmp(a, b) == 0;
+	}
+};
+
+template<>
+struct Compare<char*> {
+	static bool equal(char*& a, char*& b) {
+		return std::strcmp(a, b) == 0;
+	}
+
+	static bool equal(char*& a, const char*& b) {
+		return std::strcmp(a , b) == 0;
+	}
+};
+
+template<typename Key, typename Algorithm>
+struct HashValue {
+	static uint64_t hash(const Key& k) {
+		return Algorithm::hash(&k, sizeof(k));
+	}
+};
+
+template<typename Algorithm>
+struct HashValue<const char*, Algorithm> {
+	static uint64_t hash(const char* const& k) {
+		return Algorithm::hash(k, std::strlen(k));
+	}
+};
+
+template<typename Algorithm>
+struct HashValue<char*, Algorithm> {
+	static uint64_t hash(char* const& k) {
+		return Algorithm::hash(k, std::strlen(k));
+	}
+};
+
 template<typename T> struct SignedInteger;
 
 #define SPECIALIZE_SIGNED_INTEGER(type, value) \

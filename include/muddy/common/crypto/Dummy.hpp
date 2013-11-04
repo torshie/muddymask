@@ -8,17 +8,19 @@ namespace muddy { namespace crypto {
 
 class Dummy {
 public:
-	explicit Dummy(uint64_t k) : key(k) {}
+	typedef uint64_t CryptoKey;
 
-	void encrypt(const std::string& text, std::string* output);
-	void decrypt(const std::string& data, std::string* text);
+	explicit Dummy(CryptoKey k) : key(k) {}
 
-	void setKey(uint64_t k) {
+	void encrypt(const void* text, int length, std::string* output) const;
+	void decrypt(const void* data, int length, std::string* text) const;
+
+	void setKey(CryptoKey k) {
 		key = k;
 	}
 
 private:
-	uint64_t key;
+	CryptoKey key;
 };
 
 }} // muddy

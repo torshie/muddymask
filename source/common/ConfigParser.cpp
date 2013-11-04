@@ -1,4 +1,10 @@
 #include <cctype>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <muddy/common/compat/memory>
+#include <muddy/common/except.hpp>
 #include <muddy/common/wrapper/wrapper.hpp>
 #include <muddy/common/ConfigParser.hpp>
 

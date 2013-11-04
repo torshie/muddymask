@@ -13,6 +13,7 @@ set(GENERIC_SOURCE
 set(WIN32_SOURCE
 		Registry.cpp
 		thread/Thread_win32.cpp
+		thread/sync_win32.cpp
 		)
 
 set(POSIX_SOURCE

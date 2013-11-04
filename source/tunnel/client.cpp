@@ -1,8 +1,3 @@
-#include <iostream>
-#if _WIN32
-#include <winsock2.h>
-#include <windows.h>
-#endif
 #include <muddy/common/Configuration.hpp>
 #include <muddy/common/InitManager.hpp>
 #include <muddy/adapter/Tuntap.hpp>

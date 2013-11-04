@@ -12,7 +12,7 @@ check_cxx_source_compiles(
 		int main() {}" HAVE_IN_ADDR_T)
 check_cxx_source_compiles(
 		"#include <winsock2.h>
-		int main() {}" HAVE_WINSOCK)
+		int main() {}" HAVE_WINSOCK2_H)
 
-configure_file(${CMAKE_SOURCE_DIR}/config.h.cmake
-		${CMAKE_BINARY_DIR}/config.h)
+configure_file(${CMAKE_SOURCE_DIR}/config.hpp.cmake
+		${CMAKE_BINARY_DIR}/cfg/config.hpp)

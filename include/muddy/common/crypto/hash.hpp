@@ -6,6 +6,12 @@
 namespace muddy { namespace crypto {
 
 struct MurmurHash {
+	static uint64_t hash(const void* data, int size) {
+		uint64_t v[2];
+		hash(data, size, 0, v);
+		return v[0] ^ v[1];
+	}
+
 	static void hash(const void* data, int size, uint32_t seed,
 			void* output);
 };

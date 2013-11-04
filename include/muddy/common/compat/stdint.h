@@ -1,7 +1,7 @@
 #ifndef MUDDY_COMMON_COMPAT_STDINT_H_INCLUDED_
 #define MUDDY_COMMON_COMPAT_STDINT_H_INCLUDED_
 
-#include <config.h>
+#include <config.hpp>
 
 #if HAVE_STDINT_H
 #	include <stdint.h>
