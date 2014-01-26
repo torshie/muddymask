@@ -1,0 +1,2 @@
+add_executable(muddy_server server.cpp)
+target_link_libraries(muddy_server muddy_common)
