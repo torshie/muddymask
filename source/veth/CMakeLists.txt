@@ -1,0 +1,5 @@
+if (WIN32)
+	add_library(tuntap STATIC EXCLUDE_FROM_ALL Tuntap_win32.cpp)
+else()
+	add_library(tuntap STATIC EXCLUDE_FROM_ALL Tuntap_unix.cpp)
+endif()
