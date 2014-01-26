@@ -1,12 +1,10 @@
 #ifndef MUDDY_COMMON_REGISTRY_HPP_
 #define MUDDY_COMMON_REGISTRY_HPP_
 
-#if !_WIN32
-#	error "Required feature is only available under windows."
-#endif
-
 #include <list>
 #include <string>
+#include <winsock2.h>
+#include <windows.h>
 
 namespace muddy {
 

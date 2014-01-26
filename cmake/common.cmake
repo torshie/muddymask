@@ -100,11 +100,7 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
-if (MSVC)
-	include(cmake/msvc.cmake)
-else()
-	include(cmake/gcc.cmake)
-endif()
+include(cmake/gcc.cmake)
 
 unset(MUDDY_ENABLE_LTO)
 unset(MUDDY_DISABLE_WERROR)

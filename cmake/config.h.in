@@ -1,0 +1,15 @@
+#ifndef MUDDY_CONFIG_H_
+#define MUDDY_CONFIG_H_
+
+#cmakedefine HAVE_SOCK_UNIX 1
+#cmakedefine HAVE_SOCK_WINSOCK2 1
+#cmakedefine HAVE_SYSCALL_UNIX 1
+#cmakedefine HAVE_SYSCALL_WIN32 1
+
+#cmakedefine HAVE_BACKWARD_PATH_SEPA 1
+#cmakedefine HAVE_FORWARD_PATH_SEPA 1
+
+#cmakedefine HAVE_TUNTAP_WIN32 1
+#cmakedefine HAVE_TUNTAP_LINUX 1
+
+#endif // MUDDY_CONFIG_H_

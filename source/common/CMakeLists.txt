@@ -5,14 +5,10 @@ if (WIN32)
 			mm/AlignedAllocator_win32.cpp
 			)
 else()
-	if (NOT APPLE)
-		set(MUDDY_PLATFORM_SOURCE
-				StackTrace_unix.cpp
-				mm/AlignedAllocator_unix.cpp
-				)
-	else()
-		# TODO complete this branch
-	endif()
+	set(MUDDY_PLATFORM_SOURCE
+			StackTrace_unix.cpp
+			mm/AlignedAllocator_unix.cpp
+			)
 endif()
 
 add_library(muddy_common STATIC EXCLUDE_FROM_ALL

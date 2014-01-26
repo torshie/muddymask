@@ -9,17 +9,12 @@
 
 using namespace muddy;
 
-StackTrace::StackTrace(int skip) {
-	backtrace_state* state = backtrace_create_state(nullptr, 0, nullptr,
-			nullptr);
-	void (*empty)(void*, const char*, int) =
-			[](void*, const char*, int) {};
-	backtrace_full(state, skip, &append, empty, this);
-}
+namespace {
 
-int StackTrace::append(void* data, uintptr_t pc, const char* filename,
+int append(void* data, uintptr_t pc, const char* filename,
 		int lineno, const char* function) {
-	auto trace = static_cast<StackTrace*>(data);
+	using Symbol = StackTrace::Symbol;
+	auto trace = static_cast<std::vector<Symbol>*>(data);
 	if (filename != nullptr) {
 		filename = util::basename(filename);
 	} else {
@@ -31,10 +26,19 @@ int StackTrace::append(void* data, uintptr_t pc, const char* filename,
 		char* demangled = abi::__cxa_demangle(function, nullptr, nullptr,
 				&status);
 		const char* symbol = (status == 0) ? demangled : function;
-		trace->trace.push_back(Symbol{pc, filename, lineno, symbol});
+		trace->push_back(Symbol{pc, filename, lineno, symbol});
 		std::free(demangled);
 	} else {
-		trace->trace.push_back(Symbol{pc, filename, lineno, "???"});
+		trace->push_back(Symbol{pc, filename, lineno, "???"});
 	}
 	return 0;
+}
+
+} // namespace
+
+StackTrace::StackTrace(int skip) {
+	backtrace_state* state = backtrace_create_state(nullptr, 0, nullptr,
+			nullptr);
+	auto empty = [](void*, const char*, int) {};
+	backtrace_full(state, skip, &append, empty, this);
 }

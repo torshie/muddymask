@@ -1,4 +1,3 @@
-#include <windows.h>
 #include <muddy/common/except.hpp>
 #include <muddy/common/Registry.hpp>
 

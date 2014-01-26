@@ -1,6 +1,10 @@
 #ifndef MUDDY_VETH_TUNTAP_HPP_
 #define MUDDY_VETH_TUNTAP_HPP_
 
+#if HAVE_MUDDY_CONFIG_H
+#	include <muddy/config.h>
+#endif
+
 #include <muddy/support/net.hpp>
 
 namespace muddy {
@@ -14,10 +18,12 @@ public:
 	int write(const void* buffer, int size);
 
 private:
-#if _WIN32
+#if HAVE_TUNTAP_WIN32
 	void* handle; // TODO Bad design to use type void* instead of HANDLE
-#else
+#elif HAVE_TUNTAP_LINUX
 	int handle;
+#else
+#	error "Your platform isn't supported."
 #endif
 };
 

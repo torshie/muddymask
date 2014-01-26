@@ -1,10 +1,9 @@
-#ifndef MUDDY_COMMON_WRAPPER_HPP_
-#	error "#include <muddy/common/wrapper/wrapper.hpp> instead"
-#endif
-
+#include <cerrno>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <muddy/common/except.hpp>
+#include <muddy/common/util/define.hpp>
 
 namespace muddy { namespace wrapper {
 
@@ -12,7 +11,7 @@ inline void* mmap_(void *addr, size_t length, int prot, int flags, int fd,
 		off_t offset) {
 	void* p = mmap(addr, length, prot, flags, fd, offset);
 	if (MUDDY_UNLIKELY(p == MAP_FAILED)) {
-		throw BadErrno(errno);
+		throw SystemError{errno};
 	}
 	return p;
 }

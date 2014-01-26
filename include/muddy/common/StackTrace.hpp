@@ -8,13 +8,14 @@
 namespace muddy {
 
 class StackTrace {
+public:
 	struct Symbol {
 		uintptr_t address;
 		std::string file;
 		int line;
 		std::string name;
 	};
-public:
+
 	explicit StackTrace(int skip = 1);
 
 	std::vector<Symbol>::const_iterator begin() const {
@@ -27,11 +28,6 @@ public:
 
 private:
 	std::vector<Symbol> trace;
-
-#if !_WIN32
-	static int append(void* data, uintptr_t pc, const char* filename,
-			int lineno, const char* function);
-#endif
 };
 
 } // namespace muddy

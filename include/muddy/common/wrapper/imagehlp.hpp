@@ -1,7 +1,3 @@
-#ifndef MUDDY_COMMON_WRAPPER_HPP_
-#	error "#include <muddy/common/wrapper/wrapper.hpp> instead"
-#endif
-
 #include <imagehlp.h>
 
 namespace muddy { namespace wrapper {

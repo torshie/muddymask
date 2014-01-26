@@ -1,7 +1,4 @@
-#ifndef MUDDY_COMMON_WRAPPER_HPP_
-#	error "#include <muddy/common/wrapper/wrapper.hpp> instead"
-#endif
-
+#include <winsock2.h>
 #include <windows.h>
 #include <muddy/common/except.hpp>
 #include <muddy/common/util/define.hpp>
@@ -13,7 +10,7 @@ inline LPVOID VirtualAlloc_(LPVOID lpAddress, SIZE_T dwSize,
 	auto r = VirtualAlloc(lpAddress, dwSize, flAllocationType,
 			flProtect);
 	if (MUDDY_UNLIKELY(r == nullptr)) {
-		throw WinApiError{};
+		throw SystemError(GetLastError());
 	}
 	return r;
 }
@@ -31,7 +28,7 @@ inline HANDLE CreateFile_(LPCTSTR lpFileName, DWORD dwDesiredAccess,
 			lpSecurityAttributes, dwCreationDisposition,
 			dwFlagsAndAttributes, hTemplateFile);
 	if (MUDDY_UNLIKELY(r == INVALID_HANDLE_VALUE)) {
-		throw WinApiError{lpFileName};
+		throw SystemError(GetLastError(), lpFileName);
 	}
 	return r;
 }

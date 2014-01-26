@@ -1,14 +1,20 @@
+#if HAVE_MUDDY_CONFIG_H
+#	include <muddy/config.h>
+#endif
+
 #include <cstring>
 #include <muddy/common/util/define.hpp>
 #include <muddy/common/util/path.hpp>
 
-namespace muddy {
+namespace {
 
-const char kPathSeparator =
-#if _WIN32
-		'\\';
+const char kPathSeparator
+#if HAVE_BACKWARD_PATH_SEPA
+	{'\\'};
+#elif HAVE_FORWARD_PATH_SEPA
+	{'/'};
 #else
-		'/';
+#	error "Your platform isn't supported."
 #endif
 
 } // namespace
