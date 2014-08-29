@@ -1,10 +1,7 @@
 #ifndef MUDDY_SUPPORT_NET_HPP_
 #define MUDDY_SUPPORT_NET_HPP_
 
-#ifdef HAVE_MUDDY_CONFIG_H
-#	include <muddy/config.h>
-#endif // #if HAVE_MUDDY_CONFIG_H
-
+#include <muddy/config.h>
 #include <cstdint>
 
 #if HAVE_SOCK_UNIX
@@ -12,6 +9,7 @@
 #	include <sys/socket.h>
 #	include <arpa/inet.h>
 #	include <netinet/in.h>
+#	include <netdb.h>
 #elif HAVE_SOCK_WINSOCK2
 #include <ws2tcpip.h>
 using in_addr_t = uint32_t;

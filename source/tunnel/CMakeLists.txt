@@ -1,2 +1,6 @@
-add_executable(muddy_server server.cpp)
-target_link_libraries(muddy_server muddy_common)
+add_executable(muddy_tunnel main.cpp TunnelClient.cpp TunnelServer.cpp)
+target_link_libraries(muddy_tunnel muddy_net muddy_tuntap
+		muddy_crypto muddy_common)
+if (WIN32)
+	target_link_libraries(muddy_tunnel ws2_32 iphlpapi)
+endif()

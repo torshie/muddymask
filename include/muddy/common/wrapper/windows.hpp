@@ -1,5 +1,6 @@
 #include <winsock2.h>
 #include <windows.h>
+#include <iphlpapi.h>
 #include <muddy/common/except.hpp>
 #include <muddy/common/util/define.hpp>
 
@@ -17,7 +18,7 @@ inline LPVOID VirtualAlloc_(LPVOID lpAddress, SIZE_T dwSize,
 
 inline void VirtualFree_(LPVOID lpAddress, SIZE_T dwSize,
 		DWORD dwFreeType) {
-	INNER_ASSURE_TRUE(VirtualFree(lpAddress, dwSize, dwFreeType));
+	MUDDY_ASSURE_TRUE(VirtualFree(lpAddress, dwSize, dwFreeType));
 }
 
 inline HANDLE CreateFile_(LPCTSTR lpFileName, DWORD dwDesiredAccess,
@@ -34,14 +35,14 @@ inline HANDLE CreateFile_(LPCTSTR lpFileName, DWORD dwDesiredAccess,
 }
 
 inline void CloseHandle_(HANDLE h) {
-	INNER_ASSURE_TRUE(CloseHandle(h));
+	MUDDY_ASSURE_TRUE(CloseHandle(h));
 }
 
 inline void DeviceIoControl_(HANDLE hDevice, DWORD dwIoControlCode,
 		LPVOID lpInBuffer, DWORD nInBufferSize, LPVOID lpOutBuffer,
 		DWORD nOutBufferSize, LPDWORD lpBytesReturned,
 		LPOVERLAPPED lpOverlapped) {
-	INNER_ASSURE_TRUE(DeviceIoControl(hDevice, dwIoControlCode,
+	MUDDY_ASSURE_TRUE(DeviceIoControl(hDevice, dwIoControlCode,
 			lpInBuffer, nInBufferSize, lpOutBuffer, nOutBufferSize,
 			lpBytesReturned, lpOverlapped));
 }
@@ -49,14 +50,14 @@ inline void DeviceIoControl_(HANDLE hDevice, DWORD dwIoControlCode,
 inline void ReadFile_(HANDLE hFile, LPVOID lpBuffer,
 		DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
 		LPOVERLAPPED lpOverlapped) {
-	INNER_ASSURE_TRUE(ReadFile(hFile, lpBuffer, nNumberOfBytesToRead,
+	MUDDY_ASSURE_TRUE(ReadFile(hFile, lpBuffer, nNumberOfBytesToRead,
 			lpNumberOfBytesRead, lpOverlapped));
 }
 
 inline void WriteFile_(HANDLE hFile, LPCVOID lpBuffer,
 		DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
 		LPOVERLAPPED lpOverlapped) {
-	INNER_ASSURE_TRUE(hFile, lpBuffer, nNumberOfBytesToWrite,
+	MUDDY_ASSURE_TRUE(hFile, lpBuffer, nNumberOfBytesToWrite,
 			lpNumberOfBytesWritten, lpOverlapped);
 }
 

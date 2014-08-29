@@ -8,7 +8,7 @@ void assureZero(Ret v, Args... args) {
 }
 
 template<typename Ret, typename... Args>
-Ret assureNonnega(Ret v, Args... args) {
+Ret assureNatural(Ret v, Args... args) {
 	if (MUDDY_UNLIKELY(v < 0)) {
 		throw SystemError(errno, args...);
 	}

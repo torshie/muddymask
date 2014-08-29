@@ -16,6 +16,9 @@ core.*
 /.cproject
 /.settings
 
+# Some actually useful files that are generated during compilation
+/.useless
+
 # Build directory of Eclipse
 /Debug
 /Release

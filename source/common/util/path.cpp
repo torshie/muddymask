@@ -1,7 +1,4 @@
-#if HAVE_MUDDY_CONFIG_H
-#	include <muddy/config.h>
-#endif
-
+#include <muddy/config.h>
 #include <cstring>
 #include <muddy/common/util/define.hpp>
 #include <muddy/common/util/path.hpp>

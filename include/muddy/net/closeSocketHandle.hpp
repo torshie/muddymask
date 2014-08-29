@@ -1,13 +1,10 @@
 #ifndef MUDDY_NET_CLOSE_SOCKET_HANDLE_HPP_
 #define MUDDY_NET_CLOSE_SOCKET_HANDLE_HPP_
 
-#if HAVE_MUDDY_CONFIG_H
-#	include <muddy/config.h>
-#endif
-
+#include <muddy/config.h>
 #include <muddy/support/net.hpp>
 
-namespace muddy { namespace net {
+namespace muddy {
 
 inline void closeSocketHandle(SocketHandle handle) {
 #if HAVE_SOCK_UNIX
@@ -23,6 +20,6 @@ inline void closeSocketHandle(SocketHandle handle) {
 #endif
 }
 
-}} // namespace muddy::net
+} // namespace muddy
 
 #endif // MUDDY_NET_CLOSE_SOCKET_HANDLE_HPP_

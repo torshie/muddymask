@@ -13,7 +13,11 @@ endif()
 
 add_library(muddy_common STATIC EXCLUDE_FROM_ALL
 		except.cpp
+		logging/Logger.cpp
+		thread/shared_mutex.cpp
+		util/net.cpp
 		util/path.cpp
+		util/misc.cpp
 		${MUDDY_PLATFORM_SOURCE}
 		)
 unset(MUDDY_PLATFORM_SOURCE)

@@ -32,10 +32,10 @@ struct Concat<T> {
 
 namespace muddy { namespace tpl {
 
-template<typename T, typename... Types>
-std::string concat(T v, Types... values) {
+template<typename... Types>
+std::string concat(Types... values) {
 	std::ostringstream stream;
-	inner::tpl::Concat<T, Types...>::concat(stream, v, values...);
+	inner::tpl::Concat<Types...>::concat(stream, values...);
 	return std::move(stream.str());
 }
 

@@ -1,25 +1,29 @@
 #ifndef MUDDY_VETH_TUNTAP_HPP_
 #define MUDDY_VETH_TUNTAP_HPP_
 
-#if HAVE_MUDDY_CONFIG_H
-#	include <muddy/config.h>
-#endif
-
+#include <muddy/config.h>
 #include <muddy/support/net.hpp>
 
 namespace muddy {
 
 class Tuntap {
 public:
-	Tuntap(in_addr_t address, in_addr_t netmask);
+	Tuntap();
 	~Tuntap();
 
 	int read(void* buffer, int size);
 	int write(const void* buffer, int size);
+	void start(in_addr_t address, in_addr_t netmask);
+
+	void getAddress(unsigned char* mac) const {
+		std::memcpy(mac, this->mac, 6);
+	}
 
 private:
+	unsigned char mac[6];
 #if HAVE_TUNTAP_WIN32
 	void* handle; // TODO Bad design to use type void* instead of HANDLE
+	int index;
 #elif HAVE_TUNTAP_LINUX
 	int handle;
 #else
