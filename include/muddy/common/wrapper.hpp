@@ -3,6 +3,7 @@
 
 #include <muddy/config.h>
 #include <cerrno>
+#include <cstdio>
 
 #define MUDDY_ASSURE_ZERO(...) \
 	::muddy::inner::wrapper::assureZero(__VA_ARGS__)

@@ -6,9 +6,17 @@ if (WIN32)
 			)
 else()
 	set(MUDDY_PLATFORM_SOURCE
-			StackTrace_unix.cpp
 			mm/AlignedAllocator_unix.cpp
 			)
+	if ("${MUDDY_SYSTEM_NAME}" STREQUAL "android")
+		set(MUDDY_PLATFORM_SOURCE
+				StackTrace_android.cpp
+				${MUDDY_PLATFORM_SOURCE})
+	else()
+		set(MUDDY_PLATFORM_SOURCE
+				StackTrace_unix.cpp
+				${MUDDY_PLATFORM_SOURCE})
+	endif()
 endif()
 
 add_library(muddy_common STATIC EXCLUDE_FROM_ALL
@@ -22,7 +30,7 @@ add_library(muddy_common STATIC EXCLUDE_FROM_ALL
 		)
 unset(MUDDY_PLATFORM_SOURCE)
 
-if (UNIX)
+if (UNIX AND NOT "${MUDDY_SYSTEM_NAME}" STREQUAL "android")
 	add_dependencies(muddy_common build_backtrace)
 	target_link_libraries(muddy_common backtrace)
 endif()

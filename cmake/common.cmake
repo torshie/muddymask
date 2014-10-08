@@ -61,11 +61,11 @@ if (NOT "${MUDDY_BUILD_TYPE}" STREQUAL "release"
 endif()
 
 # Command line macro definition: MUDDY_LOGGING_LEVEL
-set(HELP_MESSAGE "Logging level, could be one of: kTrace, kDebug, "
+set(MUDDY_HELP_MESSAGE "Logging level, could be one of: kTrace, kDebug, "
 		"kVerbose, kInfo, kNotice, kWarning, kError, kFatal")
-muddy_join_string(HELP_MESSAGE)
-set(MUDDY_LOGGING_LEVEL "" CACHE STRING "${HELP_MESSAGE}")
-unset(HELP_MESSAGE)
+muddy_join_string(MUDDY_HELP_MESSAGE)
+set(MUDDY_LOGGING_LEVEL "" CACHE STRING "${MUDDY_HELP_MESSAGE}")
+unset(MUDDY_HELP_MESSAGE)
 if (NOT "${MUDDY_LOGGING_LEVEL}" STREQUAL "")
 	add_definitions("-DMUDDY_LOGGING_LEVEL=${MUDDY_LOGGING_LEVEL}")
 endif()
@@ -86,9 +86,10 @@ option(MUDDY_ENABLE_LTO "${HELP_MESSAGE}" ON)
 unset(HELP_MESSAGE)
 
 # Option MUDDY_DISABLE_WERROR
-set(HELP_MESSAGE "Do not treat compiler warnings as errors [default=OFF]")
-option(MUDDY_DISABLE_WERROR "${HELP_MESSAGE}" OFF)
-unset(HELP_MESSAGE)
+set(MUDDY_HELP_MESSAGE "Do not treat compiler warnings as errors"
+		" [default=OFF]")
+option(MUDDY_DISABLE_WERROR "${MUDDY_HELP_MESSAGE}" OFF)
+unset(MUDDY_HELP_MESSAGE)
 
 # RPATH and output directory related variables
 set(CMAKE_INSTALL_RPATH

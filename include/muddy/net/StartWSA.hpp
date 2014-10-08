@@ -23,7 +23,6 @@ class StartWSA {
 	~StartWSA() {
 		WSACleanup();
 	}
-
 };
 
 static InitGlobal<StartWSA> _initStartWSA;

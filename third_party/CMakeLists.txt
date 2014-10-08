@@ -5,7 +5,7 @@ add_custom_target(setup_3rd_party_env
 		COMMAND ${CMAKE_COMMAND} -E make_directory third_party/include
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
-if (UNIX)
+if (UNIX AND NOT "${MUDDY_SYSTEM_NAME}" STREQUAL "android")
 	add_subdirectory(wrapper)
 	set(MUDDY_SETENV CC=${CMAKE_CURRENT_BINARY_DIR}/wrapper/mycc
 			CXX=${CMAKE_CURRENT_BINARY_DIR}/wrapper/mycxx)

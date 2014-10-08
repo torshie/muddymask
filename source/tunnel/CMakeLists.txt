@@ -4,3 +4,6 @@ target_link_libraries(muddy_tunnel muddy_net muddy_tuntap
 if (WIN32)
 	target_link_libraries(muddy_tunnel ws2_32 iphlpapi)
 endif()
+if ("${MUDDY_SYSTEM_NAME}" STREQUAL "android")
+	target_link_libraries(muddy_tunnel gnustl_shared supc++)
+endif()

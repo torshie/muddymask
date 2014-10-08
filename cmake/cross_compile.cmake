@@ -1,6 +1,18 @@
-set(CMAKE_SYSTEM_NAME Windows)
+set(MUDDY_SYSTEM_NAME Windows CACHE STRING
+		"Cross compiling target name, could be Windows/Android")
 set(MUDDY_TOOLCHAIN_PREFIX x86_64-w64-mingw32- CACHE STRING
 		"Cross compiling toolchain prefix, must ends with a dash(-)")
+
+string(TOLOWER "${MUDDY_SYSTEM_NAME}" MUDDY_SYSTEM_NAME)
+if ("${MUDDY_SYSTEM_NAME}" STREQUAL "android"
+		OR "${MUDDY_SYSTEM_NAME}" STREQUAL "linux")
+	set(CMAKE_SYSTEM_NAME Linux)
+elseif ("${MUDDY_SYSTEM_NAME}" STREQUAL "windows")
+	set(CMAKE_SYSTEM_NAME Windows)
+else()
+	message(FATAL_ERROR "Unknown target name: ${MUDDY_SYSTEM_NAME}")
+endif()
+
 set(CMAKE_C_COMPILER ${MUDDY_TOOLCHAIN_PREFIX}gcc)
 set(CMAKE_CXX_COMPILER ${MUDDY_TOOLCHAIN_PREFIX}g++)
 

@@ -1,5 +1,6 @@
 #include <cerrno>
 #include <sys/mman.h>
+#include <sys/uio.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <muddy/common/except.hpp>
