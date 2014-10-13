@@ -4,6 +4,7 @@
 namespace muddy { namespace util {
 
 void sleep(int millisecond);
+void hexdump(const void* data, int size);
 
 }} // namespace muddy::util
 

@@ -15,16 +15,19 @@ public:
 	};
 
 	TunnelClient(DatagramSocket* sock, Tuntap* veth, const char* secret,
-			const sockaddr_in& remote)
-			: server(remote), crypto(secret), sock(sock), veth(veth) {}
+			uint32_t identity, const sockaddr_in& remote)
+			: server(remote), identity(identity), crypto(secret),
+			sock(sock), veth(veth), stop(false) {}
 
 	void startThread(ThreadType type);
 
 private:
 	sockaddr_in server;
+	uint32_t identity;
 	DummyCrypto crypto;
 	DatagramSocket* sock;
 	Tuntap* veth;
+	volatile bool stop;
 
 	void sendHeartbeat();
 	void handleNetworkDatagram();

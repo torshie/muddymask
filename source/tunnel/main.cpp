@@ -97,15 +97,15 @@ bool startSession(Tuntap* veth, DatagramSocket* sock,
 		PacketHeader header;
 		StartSession payload;
 	} request;
-	std::memset(&request, 0, sizeof(request));
 	request.header.length = sizeof(request.payload);
+	request.header.identity = 0;
 	request.header.type = PacketHeader::Type::kStartSession;
 	veth->getAddress(request.payload.mac.addr);
 
 	DummyCrypto crypto("jiubugaosuni");
 	crypto.encrypt(&request, sizeof(request));
 
-	struct {
+	struct [[gnu::packed]] {
 		PacketHeader header;
 		SessionInfo info;
 	} response;
@@ -134,7 +134,8 @@ void startClient() {
 	veth.start(info.address, info.netmask);
 
 	ThreadWrapper<TunnelClient> client(
-			new TunnelClient(&sock, &veth, "jiubugaosuni", config.remote));
+			new TunnelClient(&sock, &veth, "jiubugaosuni", info.identity,
+					config.remote));
 	std::thread a(client, TunnelClient::ThreadType::kHeartbeat);
 	std::thread b(client, TunnelClient::ThreadType::kNetworkDatagram);
 	std::thread c(client, TunnelClient::ThreadType::kVirtualEthernet);

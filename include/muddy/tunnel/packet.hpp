@@ -2,19 +2,29 @@
 #define MUDDY_TUNNEL_PACKET_HEADER_HPP_INCLUDED_
 
 #include <cstdint>
-#include <initializer_list>
 
 namespace muddy {
 
+enum class ErrorCode : uint16_t {
+	kAllIsWell = 0,
+	kWrongVersion,
+	kRestartSession,
+};
+
 struct [[gnu::packed]] PacketHeader {
 	enum Type : uint8_t {
-		kHeartbeat = 1, kStartSession, kSessionInfo, kCloseSession,
-		kRelayData, kTypeCount
+		kHeartbeat = 1, kStartSession, kSessionInfo, kRelayData,
+		kErrorDetail, kTypeCount
+	};
+
+	enum {
+		kVersion = 1,
 	};
 
 	Type type;
-	uint8_t _zero = 0;
+	uint8_t version = kVersion;
 	uint16_t length;
+	uint32_t identity;
 };
 
 struct [[gnu::packed]] InetAddress {
@@ -74,6 +84,7 @@ struct [[gnu::packed]] SessionInfo {
 	in_addr_t address;
 	in_addr_t gateway;
 	in_addr_t netmask;
+	uint32_t identity;
 };
 
 struct [[gnu::packed]] Heartbeat {
@@ -87,6 +98,10 @@ struct [[gnu::packed]] EthernetHeader {
 		uint16_t type;
 		uint16_t length;
 	};
+};
+
+struct [[gnu::packed]] ErrorDetail {
+	ErrorCode code;
 };
 
 } // namespace muddy

@@ -63,6 +63,7 @@ public:
 		veth->getAddress(config.vmac.addr);
 		pool.current = ntohl(wrapper::inet_addr_("10.20.30.100"));
 		pool.upper = ntohl(wrapper::inet_addr_("10.20.30.200"));
+		identity = random();
 	}
 
 	void startThread(ThreadType type);
@@ -70,11 +71,13 @@ public:
 private:
 	struct ClientInfo {
 		struct {
-			InetAddress inet;
+			in_addr_t ip;
 			MacAddress mac;
-			in_addr_t vip;
-		} address;
-		time_t lastActivity;
+		} tun;
+		sockaddr_in address;
+		uint32_t identity;
+		time_t alive;
+		shared_mutex mutex;
 	};
 
 	struct AddressPool {
@@ -91,11 +94,12 @@ private:
 	} config;
 
 	struct {
-		std::unordered_map<InetAddress, ClientInfo*> inet;
+		std::unordered_map<uint32_t, ClientInfo*> id;
 		std::unordered_map<MacAddress, ClientInfo*> mac;
-		shared_mutex shared;
+		shared_mutex mutex;
 	} dict;
 
+	uint32_t identity;
 	DummyCrypto crypto;
 	DatagramSocket* sock;
 	Tuntap* veth;
@@ -105,18 +109,17 @@ private:
 	void removeZombieClient();
 	void broadcastEthernetFrame(EthernetHeader* header, int size);
 	void unicastEthernetFrame(EthernetHeader* header, int size);
-	void relayData(const sockaddr_in& peer, const char* packet,
-			int length);
-	void startSession(const sockaddr_in& peer, const char* packet,
-			int length);
-	void closeSession(const sockaddr_in& peer, const char* packet,
-			int length);
-	void handleHeartbeat(const sockaddr_in& peer, const char* packet,
-			int length);
-	void handleDuplicatedSession(ClientInfo* info, const char* packet);
+	void relayData(const sockaddr_in& peer, uint32_t id,
+			const char* packet, int length);
+	void startSession(const sockaddr_in& peer, uint32_t id,
+			const char* packet, int length);
+	void handleHeartbeat(const sockaddr_in& peer, uint32_t id,
+			const char* packet, int length);
 	in_addr_t allocateAddress();
 	void releaseAddress(in_addr_t address);
-	void sendSessionInfo(const sockaddr_in& peer, in_addr_t vip);
+	void sendSessionInfo(const sockaddr_in& peer, uint32_t id,
+			in_addr_t vip);
+	void sendErrorCode(const sockaddr_in& peer, ErrorCode code);
 };
 
 } // namespace muddy

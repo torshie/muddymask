@@ -15,10 +15,12 @@ void TunnelClient::startThread(ThreadType type) {
 		break;
 	case ThreadType::kNetworkDatagram:
 		logging::Logger::get().setIdentity("net");
+		MUDDY_DEBUG << "Starting network thread";
 		handleNetworkDatagram();
 		break;
 	case ThreadType::kVirtualEthernet:
 		logging::Logger::get().setIdentity("veth");
+		MUDDY_DEBUG << "Starting virtual ethernet thread.";
 		handleVirtualEthernet();
 		break;
 	default:
@@ -31,14 +33,14 @@ void TunnelClient::sendHeartbeat() {
 		PacketHeader header;
 		Heartbeat heartbeat;
 	} data;
-	data.header._zero = 0;
+	data.header.identity = identity;
 	data.header.length = sizeof(data.heartbeat);
 	data.header.type = PacketHeader::Type::kHeartbeat;
 	data.heartbeat.i = std::time(nullptr);
 
 	crypto.encrypt(&data, sizeof(data));
-	while (true) {
-		util::sleep(15000);
+	while (!stop) {
+		util::sleep(5000);
 		sock->send(server, &data, sizeof(data));
 	}
 }
@@ -54,10 +56,14 @@ void TunnelClient::handleNetworkDatagram() {
 		}
 		crypto.decrypt(packet, size);
 		auto header = reinterpret_cast<PacketHeader*>(packet);
-		if (header->type != PacketHeader::Type::kRelayData
-				|| header->length < sizeof(EthernetHeader)
+		if (header->type == PacketHeader::Type::kErrorDetail) {
+			MUDDY_ERROR << "Error code received from server";
+			stop = true;
+			return;
+		}
+		if (header->length < sizeof(EthernetHeader)
 				|| header->length + sizeof(PacketHeader) != size) {
-			MUDDY_DEBUG << "packet size incorrect";
+			MUDDY_DEBUG << "Wrong packet size.";
 			continue;
 		}
 		veth->write(header + 1, header->length);
@@ -67,12 +73,12 @@ void TunnelClient::handleNetworkDatagram() {
 void TunnelClient::handleVirtualEthernet() {
 	struct [[gnu::packed]] {
 		PacketHeader header;
-		unsigned char data[2000];
+		char data[2000];
 	} packet;
-	packet.header._zero = 0;
+	packet.header.identity = identity;
 	packet.header.type = PacketHeader::Type::kRelayData;
 
-	while (true) {
+	while (!stop) {
 		char buffer[sizeof(packet)];
 		ssize_t s = veth->read(packet.data, sizeof(packet.data));
 		packet.header.length = s;
