@@ -1,0 +1,114 @@
+project(THIRD_PARTY)
+cmake_minimum_required(VERSION 2.6)
+
+execute_process(COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/extra/job_number.sh
+		OUTPUT_VARIABLE SRCH_JOB_NUMBER)
+string(STRIP ${SRCH_JOB_NUMBER} SRCH_JOB_NUMBER)
+
+if (CMAKE_TOOLCHAIN_FILE)
+	if (IS_ABSOLUTE "${CMAKE_TOOLCHAIN_FILE}")
+		set(SRCH_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
+	else()
+		set(SRCH_TOOLCHAIN_FILE ${CMAKE_BINARY_DIR}/${CMAKE_TOOLCHAIN_FILE})
+	endif()
+endif()
+
+macro(srch_add_external name path)
+	add_custom_target(build_${name}
+			COMMAND ./check_and_run.sh ${name} rm -rf build/${path}
+			COMMAND ./check_and_run.sh ${name}
+				cp -r ${CMAKE_CURRENT_SOURCE_DIR}/${path} build/${path}
+			COMMAND ./check_and_run.sh ${name}
+				${CMAKE_COMMAND} -E
+					chdir ${CMAKE_BINARY_DIR}/third_party/build/${path}
+					env "CC=${CMAKE_BINARY_DIR}/third_party/cc"
+						"CXX=${CMAKE_BINARY_DIR}/third_party/c++"
+						"CFLAGS=${SRCH_COMPILE_FLAGS}"
+						"CXXFLAGS=${SRCH_COMPILE_FLAGS}"
+						"LDFLAGS=${SRCH_LINK_FLAGS}"
+						"LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/third_party/lib"
+						"SRCH_BUILD_TYPE=${SRCH_BUILD_TYPE}"
+						"SRCH_JOB_NUMBER=${SRCH_JOB_NUMBER}"
+						"SRCH_THIRD_PARTY_PREFIX=${CMAKE_BINARY_DIR}/third_party"
+						"SRCH_C_COMPILER=${CMAKE_C_COMPILER}"
+						"SRCH_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
+						"CMAKE_TOOLCHAIN_FILE=${SRCH_TOOLCHAIN_FILE}"
+						"CMAKE_COMMAND=${CMAKE_COMMAND}"
+						"CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}"
+						"CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}"
+					sh ${CMAKE_CURRENT_SOURCE_DIR}/extra/build/${name}.sh
+			COMMAND ./check_and_run.sh ${name} touch build/build_${name}
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/third_party)
+endmacro(srch_add_external)
+
+srch_add_external(gtest gtest-1.6.0)
+srch_add_external(backtrace libbacktrace)
+srch_add_external(mysql mysql-connector-c-6.1.0-src)
+srch_add_external(postgres postgresql-9.2.4)
+srch_add_external(protobuf protobuf-2.5.0)
+srch_add_external(openssl openssl-1.0.1g)
+srch_add_external(readline readline-6.2)
+srch_add_external(openssh openssh-6.3p1)
+srch_add_external(dbus dbus-1.8.4)
+srch_add_external(php5 php-5.5.7)
+srch_add_external(phpembed phpembed)
+srch_add_external(sparsehash sparsehash-2.0.2)
+srch_add_external(tcmalloc gperftools-2.1)
+srch_add_external(curl curl-7.32.0)
+srch_add_external(lmdb liblmdb)
+srch_add_external(opencv opencv-2.4.9)
+srch_add_external(expat expat-2.1.0)
+srch_add_external(lept leptonica-1.68)
+srch_add_external(tesseract tesseract-ocr-3.02)
+
+if (SRCH_DISABLE_ZLIB OR NOT SRCH_ENABLE_ZLIB)
+	add_custom_target(build_zlib COMMAND echo)
+else()
+	srch_add_external(zlib zlib-1.2.8)
+endif()
+if (SRCH_DISABLE_PNG OR NOT SRCH_ENABLE_PNG)
+	add_custom_target(build_png COMMAND echo)
+else()
+	srch_add_external(png libpng-1.6.10)
+endif()
+if (SRCH_DISABLE_JPEG OR NOT SRCH_ENABLE_JPEG)
+	add_custom_target(build_jpeg COMMAND echo)
+else()
+	srch_add_external(jpeg jpeg-9a)
+endif()
+
+add_custom_target(create_core_dir
+		COMMAND mkdir -p third_party/lib third_party/include
+			third_party/build
+		COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/extra/check_and_run.sh
+			third_party
+		COMMAND chmod +x third_party/check_and_run.sh
+		COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/extra/compile
+			third_party/cc
+		COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/extra/compile
+			third_party/c++
+		COMMAND chmod +x third_party/cc third_party/c++
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
+add_dependencies(build_postgres build_zlib build_openssl create_core_dir)
+add_dependencies(build_mysql build_zlib build_openssl create_core_dir)
+add_dependencies(build_gtest create_core_dir)
+add_dependencies(build_backtrace create_core_dir)
+add_dependencies(build_protobuf create_core_dir)
+add_dependencies(build_zlib create_core_dir)
+add_dependencies(build_openssl build_zlib create_core_dir)
+add_dependencies(build_openssh build_openssl create_core_dir)
+add_dependencies(build_readline create_core_dir)
+add_dependencies(build_php5 create_core_dir)
+add_dependencies(build_phpembed build_php5 create_core_dir)
+add_dependencies(build_curl create_core_dir)
+add_dependencies(build_lmdb create_core_dir)
+add_dependencies(build_sparsehash create_core_dir)
+add_dependencies(build_tcmalloc create_core_dir)
+add_dependencies(build_png build_zlib create_core_dir)
+add_dependencies(build_opencv build_jpeg build_png create_core_dir)
+add_dependencies(build_dbus build_expat create_core_dir)
+add_dependencies(build_jpeg create_core_dir)
+add_dependencies(build_expat create_core_dir)
+add_dependencies(build_lept create_core_dir)
+add_dependencies(build_tesseract build_lept  create_core_dir)

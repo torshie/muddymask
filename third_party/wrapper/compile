@@ -1,0 +1,13 @@
+#!/bin/sh
+
+name=$(basename $0)
+
+if [ "$name" = "c++" ]; then
+	compiler="${SRCH_CXX_COMPILER}"
+else
+	compiler="${SRCH_C_COMPILER}"
+fi
+
+exec "${compiler}" "$@" "-I${CMAKE_BINARY_DIR}/third_party/include" \
+		"-L${CMAKE_BINARY_DIR}/third_party/lib" \
+		'-Wl,-rpath=$ORIGIN:$ORIGIN/../lib:$ORIGIN/../third_party/lib'
